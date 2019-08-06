@@ -1,11 +1,4 @@
 'use strict';
-// функции возварщающие разметку элементов страницы (компонентов)
-// меню
-// поиск
-// фильтры
-// карточка задачи
-// форма создания/редактирования задачи
-// кнопка load more
 const getMenuTemplate = () => {
   return `<section class="control__btn-wrap">
       <input
@@ -447,11 +440,17 @@ const getCardEditTemplate = () => {
 };
 
 const getLoadMoreButtonTemplate = () => `<button class="load-more" type="button">load more</button>`;
-// передавать контейнер как строку и обращаться через ${} внутри функции ?
+
 const renderComponents = (container, template) => {
-  container.insertAdjacentHTML(`beforeend`, template);
+  const containerElement = document.createElement(`${container}`);
+  document.querySelector(`.main`).appendChild(containerElement);
+  containerElement.insertAdjacentHTML(`afterbegin`, template);
 };
-const menuContainer = document.querySelector(`.main__control`);
-const searchContainer = document.querySelector(`.main__search`);
-renderComponents(menuContainer, getMenuTemplate());
-renderComponents(`section class="main__search search container">`, getSearchTemplate());
+renderComponents(`article`, getCardEditTemplate());
+renderComponents(`section`, getMenuTemplate());
+renderComponents(`section`, getSearchTemplate());
+renderComponents(`section`, getFilterTemplate());
+renderComponents(`section`, getLoadMoreButtonTemplate());
+renderComponents(`article`, getCardTemplate());
+renderComponents(`article`, getCardTemplate());
+renderComponents(`article`, getCardTemplate());
