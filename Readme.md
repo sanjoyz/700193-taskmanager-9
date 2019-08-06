@@ -1,7 +1,7 @@
 # Личный проект «Менеджер задач» [![Build status][travis-image]][travis-url]
 
 * Студент: [Александр](https://up.htmlacademy.ru/ecmascript/9/user/700193).
-* Наставник: `Неизвестно`.
+* Наставник: [Ruslan Malogulko](https://up.htmlacademy.ru/ecmascript/9/user/9728).
 
 ---
 
