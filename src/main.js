@@ -7,9 +7,7 @@
 // форма создания/редактирования задачи
 // кнопка load more
 const getMenuTemplate = () => {
-  return `<section class="main__control control container">
-    <h1 class="control__title">TASKMANAGER</h1>
-    <section class="control__btn-wrap">
+  return `<section class="control__btn-wrap">
       <input
         type="radio"
         name="control"
@@ -36,23 +34,19 @@ const getMenuTemplate = () => {
       <label for="control__statistic" class="control__label"
         >STATISTICS</label
       >
-    </section>
-  </section>`;
+    </section>`;
 };
 const getSearchTemplate = () => {
-  return `<section class="main__search search container">
-   <input
+  return `<input
      type="text"
      id="search__input"
      class="search__input"
      placeholder="START TYPING — SEARCH BY WORD, #HASHTAG OR DATE"
    />
-   <label class="visually-hidden" for="search__input">Search</label>
- </section>`;
+   <label class="visually-hidden" for="search__input">Search</label>`;
 };
 const getFilterTemplate = () => {
-  return `<section class="main__filter filter container">
-    <input
+  return `<input
       type="radio"
       id="filter__all"
       class="filter__input visually-hidden"
@@ -117,12 +111,10 @@ const getFilterTemplate = () => {
     />
     <label for="filter__archive" class="filter__label"
       >Archive <span class="filter__archive-count">115</span></label
-    >
-  </section>`;
+    >`;
 };
-getCardTemplate = () => {
-  return `<article class="card card--black">
-    <div class="card__form">
+const getCardTemplate = () => {
+  return `<div class="card__form">
       <div class="card__inner">
         <div class="card__control">
           <button type="button" class="card__btn card__btn--edit">
@@ -184,13 +176,10 @@ getCardTemplate = () => {
           </div>
         </div>
       </div>
-    </div>
-  </article>`;
+    </div>`;
 };
-
 const getCardEditTemplate = () => {
-  return `<article class="card card--edit card--yellow card--repeat">
-    <form class="card__form" method="get">
+  return `<form class="card__form" method="get">
       <div class="card__inner">
         <div class="card__control">
           <button type="button" class="card__btn card__btn--archive">
@@ -454,13 +443,15 @@ const getCardEditTemplate = () => {
           <button class="card__delete" type="button">delete</button>
         </div>
       </div>
-    </form>
-  </article>`;
+    </form>`;
 };
 
 const getLoadMoreButtonTemplate = () => `<button class="load-more" type="button">load more</button>`;
-
+// передавать контейнер как строку и обращаться через ${} внутри функции ?
 const renderComponents = (container, template) => {
-  let contaier;
-  contaier.insertAdjacentHTML(`beforeend`, template);
+  container.insertAdjacentHTML(`beforeend`, template);
 };
+const menuContainer = document.querySelector(`.main__control`);
+const searchContainer = document.querySelector(`.main__search`);
+renderComponents(menuContainer, getMenuTemplate());
+renderComponents(`section class="main__search search container">`, getSearchTemplate());
