@@ -1,7 +1,7 @@
 const path = require(`path`);
 
 module.exports = {
-  mode: `development`, // режим сборки
+  mode: `production`, // режим сборки
   entry: `./src/main.js`, // точка входа приложения
   output: {
     filename: `bundle.js`,
@@ -11,7 +11,7 @@ module.exports = {
   devServer: {
     contentBase: path.join(__dirname, `public`),
     publicPath: `http://localhost:8080/`,
-    compress: false,
+    compress: true,
     watchContentBase: true
   }
 };
