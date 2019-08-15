@@ -7,6 +7,8 @@ import {getTaskEditTemplate} from './components/task-edit.js';
 import {getSortingTemplate} from './components/sort.js';
 import {getLoadMoreButtonTemplate} from './components/load-more-button.js';
 import {getTask} from './data.js';
+import {getTasksArray} from './data.js';
+
 import {filters} from './data.js';
 
 const MAX_TASK_NUMBER = 16;
@@ -16,14 +18,15 @@ const renderComponent = (container, template, place = `beforeend`) => {
   container.insertAdjacentHTML(place, template);
 };
 
-const renderTasks = (count) => {
-  for (let i = 0; i < count; i++) {
+const renderTasks = (tasks) => {
+  const boardTaskElement = document.querySelector(`.board__tasks`);
+  tasks.forEach((task) => {
     if (document.querySelectorAll(`.card`).length === MAX_TASK_NUMBER) {
       boardElement.querySelector(`.load-more`).classList.add(`visually-hidden`);
       return;
     }
-    renderComponent(document.querySelector(`.board__tasks`), getTaskTemplate(getTask));
-  }
+    renderComponent(boardTaskElement, getTaskTemplate(task));
+  });
 };
 
 const siteMainElement = document.querySelector(`.main`);
@@ -43,10 +46,10 @@ renderComponent(taskListElement, getTaskEditTemplate(), `beforeend`);
 
 renderComponent(boardElement, getLoadMoreButtonTemplate(), `beforeend`);
 
-renderTasks(TASKS_TO_SHOW);
+renderTasks(getTasksArray(TASKS_TO_SHOW));
 // кнопка показать еще
 const onLoadMoreButtonClick = () => {
-  renderTasks(TASKS_TO_SHOW);
+  renderTasks(getTasksArray(TASKS_TO_SHOW));
 };
 const loadMoreButtonElement = document.querySelector(`.load-more`);
 loadMoreButtonElement.addEventListener(`click`, onLoadMoreButtonClick);
