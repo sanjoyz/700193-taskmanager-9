@@ -2,8 +2,8 @@ const getRandomNumber = (max) => {
   return Math.floor(Math.random()) * max;
 };
 
-export const getTaskTemplate = (getTasksArray) => {
-  const task = getTasksArray;
+export const getTaskTemplate = (tasksArray) => {
+  const task = tasksArray;
   return `<article class="card card--${task.color} ${Object.keys(task.repeatingDays).some((day) => task.repeatingDays[day]) ? `card--repeat` :
     ``}">
       <div class="card__form">

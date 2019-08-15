@@ -6,7 +6,7 @@ import {getTaskTemplate} from './components/task.js';
 import {getTaskEditTemplate} from './components/task-edit.js';
 import {getSortingTemplate} from './components/sort.js';
 import {getLoadMoreButtonTemplate} from './components/load-more-button.js';
-import {getTask} from './data.js';
+// import {getTask} from './data.js';
 import {getTasksArray} from './data.js';
 
 import {filters} from './data.js';
@@ -47,7 +47,7 @@ renderComponent(taskListElement, getTaskEditTemplate(), `beforeend`);
 renderComponent(boardElement, getLoadMoreButtonTemplate(), `beforeend`);
 
 renderTasks(getTasksArray(TASKS_TO_SHOW));
-// кнопка показать еще
+
 const onLoadMoreButtonClick = () => {
   renderTasks(getTasksArray(TASKS_TO_SHOW));
 };
