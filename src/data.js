@@ -3,7 +3,7 @@ export const getTask = () => ({
     `Изучить теорию`,
     `Сделать домашку`,
     `Пройти интенсив на соточку`,
-  ][Math.floor(Math.random() * 4)],
+  ][Math.floor(Math.random() * 3)],
   dueDate: Date.now() + 1 + Math.floor(Math.random() * 7) * 24 * 60 * 60 * 1000,
   repeatingDays: {
     'Mo': false,
@@ -67,7 +67,3 @@ export const filters = [
     title: `archive`,
     count: 115,
   }];
-
-
-// функция, в параметры которой будет передаваться фильтр.
-// она будет считать количество подходящих карточек на основе renderTasks()

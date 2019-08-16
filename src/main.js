@@ -6,9 +6,7 @@ import {getTaskTemplate} from './components/task.js';
 import {getTaskEditTemplate} from './components/task-edit.js';
 import {getSortingTemplate} from './components/sort.js';
 import {getLoadMoreButtonTemplate} from './components/load-more-button.js';
-// import {getTask} from './data.js';
 import {getTasksArray} from './data.js';
-
 import {filters} from './data.js';
 
 const MAX_TASK_NUMBER = 16;
