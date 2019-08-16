@@ -1,5 +1,5 @@
 const getRandomNumber = (max) => {
-  return Math.floor(Math.random()) * max;
+  return Math.floor(Math.random() * max);
 };
 
 export const getTaskTemplate = (task) => {
