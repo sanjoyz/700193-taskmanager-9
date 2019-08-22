@@ -32,12 +32,6 @@ export const getTask = () => ({
   isArchive: Boolean(Math.round(Math.random())),
 });
 
-export const getTasksArray = (number) => new Array(number).fill(``).map(() => getTask());
-/*
- export const allTasks = (n) => ([
-  getTask()
-]); */
-
 export const filters = [
   {
     title: `all`,

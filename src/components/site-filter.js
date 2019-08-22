@@ -10,5 +10,5 @@ export const getFilterTemplate = (filters) => (`
     <label for="filter__all" class="filter__label">
       ${filter.title} <span class="filter__all-count">${filter.count}</span></label
     >`).join(``)}
-    </section>`
+    </section>`.trim()
 );
