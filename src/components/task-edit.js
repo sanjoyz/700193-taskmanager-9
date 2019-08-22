@@ -18,7 +18,7 @@ export default class TaskEdit {
   }
 
   removeElement() {
-    this._elemnt = null;
+    this._element = null;
   }
 
   getTemplate() {
