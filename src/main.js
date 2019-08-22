@@ -6,8 +6,8 @@ import {getSortingTemplate} from './components/sort.js';
 import {getLoadMoreButtonTemplate} from './components/load-more-button.js';
 import {getTask} from './data.js';
 import {filters} from './data.js';
-import Task from './components/task.js'; // import {getTaskTemplate} from './components/task.js';
-import TaskEdit from './components/task-edit.js'; // import {getTaskEditTemplate} from './components/task-edit.js';
+import Task from './components/task.js';
+import TaskEdit from './components/task-edit.js';
 import {render} from './components/utils.js';
 import {Position} from './components/utils.js';
 import {createElement} from './components/utils.js';
@@ -17,7 +17,6 @@ const TASKS_TO_SHOW = 3;
 
 const siteMainElement = document.querySelector(`.main`);
 const siteHeadrElement = siteMainElement.querySelector(`.main__control`);
-
 
 render(siteHeadrElement, createElement(getMenuTemplate()), `beforeend`);
 render(siteMainElement, createElement(getSearchTemplate()), `beforeend`);
@@ -66,18 +65,6 @@ const tasksContainer = document.querySelector(`.board__tasks`);
 
 taskMocks.forEach((taskMock) => renderTask(taskMock));
 
-/*
-const renderTasks = (tasks) => {
-  const boardTaskElement = document.querySelector(`.board__tasks`);
-  tasks.forEach((task) => {
-    if (document.querySelectorAll(`.card`).length === MAX_TASK_NUMBER) {
-      boardElement.querySelector(`.load-more`).classList.add(`visually-hidden`);
-      return;
-    }
-    renderComponent(boardTaskElement, getTaskTemplate(task));
-  });
-};
-*/
 const onLoadMoreButtonClick = () => {
   taskMocks.forEach((taskMock) => renderTask(taskMock));
 };
