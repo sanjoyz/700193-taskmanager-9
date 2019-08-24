@@ -4,6 +4,7 @@ import {getFilterTemplate} from './components/site-filter.js';
 import {getBoardTemplate} from './components/board.js';
 import {getSortingTemplate} from './components/sort.js';
 import {getLoadMoreButtonTemplate} from './components/load-more-button.js';
+import {noTasksTemplate} from './components/no-task.js';
 import {getTask} from './data.js';
 import {filters} from './data.js';
 import Task from './components/task.js';
@@ -13,20 +14,26 @@ import {Position} from './components/utils.js';
 import {createElement} from './components/utils.js';
 
 const MAX_TASK_NUMBER = 15;
-const TASKS_TO_SHOW = 3;
+const TASKS_TO_SHOW = 0;
 
 const siteMainElement = document.querySelector(`.main`);
 const siteHeadrElement = siteMainElement.querySelector(`.main__control`);
-
-render(siteHeadrElement, createElement(getMenuTemplate()), `beforeend`);
-render(siteMainElement, createElement(getSearchTemplate()), `beforeend`);
-render(siteMainElement, createElement(getFilterTemplate(filters)), `beforeend`);
-render(siteMainElement, createElement(getBoardTemplate()), `beforeend`);
-const boardElement = siteMainElement.querySelector(`.board`);
-render(boardElement, createElement(getSortingTemplate()), `afterbegin`);
-render(boardElement, createElement(getLoadMoreButtonTemplate()), `beforeend`);
+const menuElement = createElement(getMenuTemplate());
+render(siteHeadrElement, menuElement, `beforeend`);
+const searchElement = createElement(getSearchTemplate());
+render(siteMainElement, searchElement, `beforeend`);
+const filterElement = createElement(getFilterTemplate(filters));
+render(siteMainElement, filterElement, `beforeend`);
+const boardElement = createElement(getBoardTemplate());
+render(siteMainElement, boardElement, `beforeend`);
+const boardElementSelector = siteMainElement.querySelector(`.board`);
+const sortingElement = createElement(getSortingTemplate());
+render(boardElementSelector, sortingElement, `afterbegin`);
+const loadMoreButtonElement = createElement(getLoadMoreButtonTemplate());
+render(boardElementSelector, loadMoreButtonElement, `beforeend`);
 
 const renderTask = (taskMock) => {
+
   const task = new Task(taskMock);
   const taskEdit = new TaskEdit(taskMock);
   if (document.querySelectorAll(`.card`).length > MAX_TASK_NUMBER) {
@@ -58,15 +65,19 @@ const renderTask = (taskMock) => {
     document.removeEventListener(`keydown`, onEscKeyDown);
   });
   render(tasksContainer, task.getElement(), Position.BEFOREEND);
+
 };
 
 const taskMocks = new Array(TASKS_TO_SHOW).fill(``).map(getTask);
 const tasksContainer = document.querySelector(`.board__tasks`);
-
-taskMocks.forEach((taskMock) => renderTask(taskMock));
+if (taskMocks.length > 0) {
+  taskMocks.forEach((taskMock) => renderTask(taskMock));
+} else {
+  render(tasksContainer, createElement(noTasksTemplate()), `beforeend`);
+}
 
 const onLoadMoreButtonClick = () => {
   taskMocks.forEach((taskMock) => renderTask(taskMock));
 };
-const loadMoreButtonElement = document.querySelector(`.load-more`);
-loadMoreButtonElement.addEventListener(`click`, onLoadMoreButtonClick);
+const loadMoreButtonElementSelector = document.querySelector(`.load-more`);
+loadMoreButtonElementSelector.addEventListener(`click`, onLoadMoreButtonClick);
