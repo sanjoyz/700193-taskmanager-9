@@ -48,7 +48,7 @@ export default class Task extends AbstractComponent {
                 <div class="card__date-deadline">
                   <p class="card__input-deadline-wrap">
                     <span class="card__date">${new Date(this._dueDate).toDateString()}</span>
-                    <span class="card__time">${new Date(this._dueDate).getHours()}:${this._dueDate.getMinutes()}}</span>
+                    <span class="card__time">${new Date(this._dueDate).getHours()}:${this._dueDate.getMinutes()}</span>
                   </p>
                 </div>
               </div>
