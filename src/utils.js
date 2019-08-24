@@ -5,7 +5,7 @@ export const Key = {
 
 export const Position = {
   AFTERBEGIN: `afterbegin`,
-  BEFOREEND: `beforeend`
+  BEFOREEND: `beforeend`,
 };
 
 export const createElement = (template) => {

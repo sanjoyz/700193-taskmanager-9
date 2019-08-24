@@ -6,6 +6,7 @@ import {Key} from '../utils.js';
 import Task from '../components/task.js';
 import TaskEdit from '../components/task-edit.js';
 import Sort from '../components/sort.js';
+import LoadMoreButton from '../components/load-more-button.js';
 export default class BoardController {
   constructor(container, tasks) {
     this._container = container;
@@ -13,6 +14,7 @@ export default class BoardController {
     this._board = new Board();
     this._sort = new Sort();
     this._taskList = new TaskList();
+    this._loadMoreButton = new LoadMoreButton();
   }
   init() {
     render(this._container, this._board.getElement(), Position.BEFOREEND);
@@ -22,6 +24,13 @@ export default class BoardController {
     this._tasks.forEach((taskMock) => this._renderTask(taskMock));
     this._sort.getElement().addEventListener(`click`, (evt) => this._onSortLinkClick(evt));
 
+    render(this._board.getElement(), this._loadMoreButton.getElement(), Position.BEFOREEND);
+
+    const onLoadMoreButtonClick = () => {
+      this._tasks.forEach((taskMock) => this._renderTask(taskMock));
+    };
+    const loadMoreButtonElement = document.querySelector(`.load-more`);
+    loadMoreButtonElement.addEventListener(`click`, onLoadMoreButtonClick);
   }
   _renderTask(task) {
     const taskComponent = new Task(task);
@@ -53,11 +62,6 @@ export default class BoardController {
     });
     render(this._taskList.getElement(), taskComponent.getElement(), Position.BEFOREEND);
 
-    const onLoadMoreButtonClick = () => {
-      this._tasks.forEach((taskMock) => this._renderTask(taskMock));
-    };
-    const loadMoreButtonElementSelector = document.querySelector(`.load-more`);
-    loadMoreButtonElementSelector.addEventListener(`click`, onLoadMoreButtonClick);
 
   }
   _onSortLinkClick(evt) {
