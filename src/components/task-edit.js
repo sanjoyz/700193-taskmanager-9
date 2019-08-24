@@ -1,26 +1,14 @@
-import {createElement} from '../components/utils.js';
+import AbstractComponent from '../components/abstract-component.js';
 
-export default class TaskEdit {
+export default class TaskEdit extends AbstractComponent {
   constructor({description, dueDate, tags, color, repeatingDays}) {
+    super();
     this._description = description;
     this._dueDate = new Date(dueDate);
     this._tags = tags;
     this._color = color;
-    this._element = null;
     this._repeatingDays = repeatingDays;
   }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
-  }
-
   getTemplate() {
     return `<article class="card card--edit card--${this._color} ${Object.values(this._repeatingDays).some((it) => it === true) ? `card--repeat` : ``}">
     <form class="card__form" method="get">
