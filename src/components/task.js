@@ -1,30 +1,18 @@
-import {createElement} from '../components/utils.js';
+import AbstractComponent from '../components/abstract-component.js';
 
 const getRandomNumber = (max) => {
   return Math.floor(Math.random() * max);
 };
 
-export default class Task {
+export default class Task extends AbstractComponent {
   constructor({description, dueDate, tags, color, repeatingDays}) {
+    super();
     this._description = description;
     this._dueDate = new Date(dueDate);
     this._tags = tags;
     this._color = color;
-    this._element = null;
     this._repeatingDays = repeatingDays;
   }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
-  }
-
   getTemplate() {
     return `<article class="card card--${this._color} ${Object.values(this._repeatingDays).some((it) => it === true) ? `card--repeat` : `` }">
         <div class="card__form">
@@ -60,7 +48,7 @@ export default class Task {
                 <div class="card__date-deadline">
                   <p class="card__input-deadline-wrap">
                     <span class="card__date">${new Date(this._dueDate).toDateString()}</span>
-                    <span class="card__time">${new Date(this._dueDate).getHours()}:${this._dueDate.getMinutes()}}</span>
+                    <span class="card__time">${new Date(this._dueDate).getHours()}:${this._dueDate.getMinutes()}</span>
                   </p>
                 </div>
               </div>

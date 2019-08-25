@@ -1,6 +1,11 @@
+export const Key = {
+  ESCAPE_IE: `Escape`,
+  ESCAPE: `Esc`,
+};
+
 export const Position = {
   AFTERBEGIN: `afterbegin`,
-  BEFOREEND: `beforeend`
+  BEFOREEND: `beforeend`,
 };
 
 export const createElement = (template) => {
@@ -20,7 +25,7 @@ export const render = (container, element, position) => {
   }
 };
 
-export const unrender = (element) => {
+export const deleteElement = (element) => {
   if (element) {
     element.remove();
     // element.removeElement();

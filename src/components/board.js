@@ -1,6 +1,6 @@
-export const getBoardTemplate = () => (`
-  <section class="board container">
-  <div class="board__tasks">
-  </div>
-  </section>`.trim()
-);
+import AbstractComponent from '../components/abstract-component.js';
+export default class Board extends AbstractComponent {
+  getTemplate() {
+    return `<section class="board container"></section>`;
+  }
+}
