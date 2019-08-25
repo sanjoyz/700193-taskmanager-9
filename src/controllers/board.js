@@ -29,8 +29,7 @@ export default class BoardController {
     const onLoadMoreButtonClick = () => {
       this._tasks.forEach((taskMock) => this._renderTask(taskMock));
     };
-    const loadMoreButtonElement = document.querySelector(`.load-more`);
-    loadMoreButtonElement.addEventListener(`click`, onLoadMoreButtonClick);
+    this._loadMoreButton.getElement().addEventListener(`click`, onLoadMoreButtonClick);
   }
   _renderTask(task) {
     const taskComponent = new Task(task);
@@ -61,8 +60,6 @@ export default class BoardController {
       document.removeEventListener(`keydown`, onEscKeyDown);
     });
     render(this._taskList.getElement(), taskComponent.getElement(), Position.BEFOREEND);
-
-
   }
   _onSortLinkClick(evt) {
     evt.preventDefault();
