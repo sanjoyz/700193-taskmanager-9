@@ -1,3 +1,4 @@
+// вроде как сделал еще в прошлый ПР (пример был в демке)
 import AbstractComponent from '../components/abstract-component.js';
 export default class Sort extends AbstractComponent {
   getTemplate() {
