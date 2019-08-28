@@ -8,6 +8,8 @@ export default class TaskEdit extends AbstractComponent {
     this._tags = tags;
     this._color = color;
     this._repeatingDays = repeatingDays;
+
+    this._subscribeOnEvents();
   }
   getTemplate() {
     return `<article class="card card--edit card--${this._color} ${Object.values(this._repeatingDays).some((it) => it === true) ? `card--repeat` : ``}">
@@ -248,5 +250,28 @@ export default class TaskEdit extends AbstractComponent {
         </div>
       </form>
       </article`;
+  }
+  _subscribeOnEvents() {
+    this.getElement().querySelector(`.card__hashtag-input`).addEventListener(`keydown`, (evt) => {
+      if (evt.key === `Enter`) {
+        evt.preventDefault();
+        this.getElement().querySelector(`.card__hashtag-list`).insertAdjacentHTML(`beforeen`, `
+          <span class="card__hashtag-inner">
+            <input
+              type="hidden"
+              name="hashtag"
+              value="${evt.target.value}"
+              class="card__hashtag-hidden-input"
+            />
+            <p class="card__hashtag-name">
+              #${evt.target.value}
+            </p>
+            <button type="button" class="card__hashtag-delete">
+              delete
+            </button>
+          </span>`);
+        evt.target.value = ``;
+      }
+    });
   }
 }
