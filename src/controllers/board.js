@@ -35,9 +35,11 @@ export default class BoardController {
   }
   _renderBoard(tasks) {
     deleteElement(this._taskList.getElement());
-
+    deleteElement(this._sort.getElement());
+    this._sort.removeElement();
     this._taskList.removeElement();
-    render(this._board.getElement(), this._taskList.getElement(), Position.BEFOREEND);
+    render(this._board.getElement(), this._taskList.getElement(), Position.AFTERBEGIN);
+    render(this._board.getElement(), this._sort.getElement(), Position.AFTERBEGIN);
     tasks.forEach((taskMock) => this._renderTask(taskMock));
   }
   _renderTask(task) {
