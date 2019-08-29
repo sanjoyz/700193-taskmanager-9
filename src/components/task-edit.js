@@ -255,7 +255,7 @@ export default class TaskEdit extends AbstractComponent {
     this.getElement().querySelector(`.card__hashtag-input`).addEventListener(`keydown`, (evt) => {
       if (evt.key === `Enter`) {
         evt.preventDefault();
-        this.getElement().querySelector(`.card__hashtag-list`).insertAdjacentHTML(`beforeen`, `
+        this.getElement().querySelector(`.card__hashtag-list`).insertAdjacentHTML(`beforeend`, `
           <span class="card__hashtag-inner">
             <input
               type="hidden"

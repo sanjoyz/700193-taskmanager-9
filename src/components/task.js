@@ -5,13 +5,15 @@ const getRandomNumber = (max) => {
 };
 
 export default class Task extends AbstractComponent {
-  constructor({description, dueDate, tags, color, repeatingDays}) {
+  constructor({description, dueDate, tags, color, repeatingDays, isFavorite, isArchive}) {
     super();
     this._description = description;
     this._dueDate = new Date(dueDate);
     this._tags = tags;
     this._color = color;
     this._repeatingDays = repeatingDays;
+    this._isFavorite = isFavorite;
+    this._isArchive = isArchive;
   }
   getTemplate() {
     return `<article class="card card--${this._color} ${Object.values(this._repeatingDays).some((it) => it === true) ? `card--repeat` : `` }">
@@ -21,12 +23,12 @@ export default class Task extends AbstractComponent {
             <button type="button" class="card__btn card__btn--edit">
               edit
             </button>
-            <button type="button" class="card__btn card__btn--archive">
+            <button type="button" class="card__btn ${this._isArchive ? `` : `card__btn--archive`}">
               archive
             </button>
             <button
               type="button"
-              class="card__btn card__btn--favorites card__btn--disabled"
+              class="card__btn card__btn--favorites ${this._isFavorite ? `` : `card__btn--disabled`}"
             >
               favorites
             </button>
