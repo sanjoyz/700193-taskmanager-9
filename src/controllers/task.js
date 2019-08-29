@@ -5,7 +5,7 @@ import {render} from '../utils.js';
 import {Position} from '../utils.js';
 
 export default class TaskController {
-  constructor(container, data, onChangeView, onDataChange) {
+  constructor(container, data, onDataChange, onChangeView) {
     this._container = container;
     this._data = data;
     this._onChangeView = onChangeView;
@@ -19,7 +19,9 @@ export default class TaskController {
   create() {
     const onEscKeyDown = (evt) => {
       if (evt.key === Key.ESCAPE || evt.key === Key.ESCAPE_IE) {
-        this._taskList.getElement().replaceChild(this._taskView.getElement(), this._TaskEdit.getElement());
+        if (this._container.getElement().contains(this._taskEdit.getElement())) {
+          this._taskList.getElement().replaceChild(this._taskView.getElement(), this._TaskEdit.getElement());
+        }
         document.removeEventListener(`keydown`, onEscKeyDown);
       }
     };
