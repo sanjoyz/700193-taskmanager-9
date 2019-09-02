@@ -40,7 +40,7 @@ export default class TaskController {
       const entry = {
         description: formData.get(`text`),
         color: formData.get(`color`),
-        tags: new Set(formData.getAll(`hashtag`)),
+        tags: new Set(formData.getAll(`hashtag-input`)),
         dueDate: new Date(formData.get(`date`)),
         repeatingDays: formData.getAll(`repeat`).reduce((acc, it) => {
           acc[it] = true;
@@ -58,6 +58,31 @@ export default class TaskController {
       };
       this._onDataChange(entry, this._data);
     });
+    // Слушатель кнопки "Избранное" в карточке при редактировании
+    this._taskEdit.getElement().querySelector(`.card__btn--favorites`).addEventListener(`click`, (evt) => {
+      evt.preventDefault();
+      const formData = new FormData(this._taskEdit.getElement().querySelector(`.card__form`));
+      const entry = {
+        description: formData.get(`text`),
+        color: formData.get(`color`),
+        tags: new Set(formData.getAll(`hashtag-input`)),
+        dueDate: new Date(formData.get(`date`)),
+        repeatingDays: formData.getAll(`repeat`).reduce((acc, it) => {
+          acc[it] = true;
+          return acc;
+        }, {
+          'mo': false,
+          'tu': false,
+          'we': false,
+          'th': false,
+          'fr': false,
+          'sa': false,
+          'su': false,
+        }),
+        isFavorite: this.isFavorite ? false : true
+      };
+      this._onDataChange(entry, this._data);
+    });
     //
     // Слушатель кнопки "Архив" в карточке при просмотре
     this._taskView.getElement().querySelector(`.card__btn--archive`).addEventListener(`click`, (evt) => {
@@ -69,6 +94,19 @@ export default class TaskController {
         dueDate: this._dueDate,
         repeatingDays: this._repeatingDays,
         isArchive: this.isArchive ? false : true
+      };
+      this._onDataChange(entry, this._data);
+    });
+    // Слушатель кнопки "Избранное" в карточке при просмотре
+    this._taskView.getElement().querySelector(`.card__btn--favorites`).addEventListener(`click`, (evt) => {
+      evt.preventDefault();
+      const entry = {
+        description: this._taskView._description,
+        color: this._taskView._color,
+        tags: this._tags,
+        dueDate: this._dueDate,
+        repeatingDays: this._repeatingDays,
+        isFavorite: this.isFavorite ? false : true
       };
       this._onDataChange(entry, this._data);
     });
@@ -95,7 +133,7 @@ export default class TaskController {
       const entry = {
         description: formData.get(`text`),
         color: formData.get(`color`),
-        tags: new Set(formData.getAll(`hashtag`)),
+        tags: new Set(formData.getAll(`hashtag-input`)),
         dueDate: new Date(formData.get(`date`)),
         repeatingDays: formData.getAll(`repeat`).reduce((acc, it) => {
           acc[it] = true;

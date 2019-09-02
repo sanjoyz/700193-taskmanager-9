@@ -1,5 +1,5 @@
 import AbstractComponent from '../components/abstract-component.js';
-
+import {deleteElement} from '../utils.js';
 export default class TaskEdit extends AbstractComponent {
   constructor({description, dueDate, tags, color, repeatingDays}) {
     super();
@@ -10,7 +10,18 @@ export default class TaskEdit extends AbstractComponent {
     this._repeatingDays = repeatingDays;
 
     this._subscribeOnEvents();
+    this._dateClickHandler();
   }
+  _dateClickHandler() {
+    this.getElement().querySelector(`.card__date-deadline-toggle`).addEventListener(`click`, () => {
+
+      this.getElement().querySelector(`.card__date.form-control`).classList.toggle(`visually-hidden`);
+      this._dueDate = null;
+
+    });
+  }
+
+
   getTemplate() {
     return `<article class="card card--edit card--${this._color} ${Object.values(this._repeatingDays).some((it) => it === true) ? `card--repeat` : ``}">
     <form class="card__form" method="get">
@@ -157,7 +168,6 @@ export default class TaskEdit extends AbstractComponent {
                     <p class="card__hashtag-name">
                       #${tag}
                     </p>
-                    <button type="button" class="card__hashtag-name">#${tag}</button>
                     <button type="button" class="card__hashtag-delete">
                       delete
                     </button>
