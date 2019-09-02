@@ -48,7 +48,7 @@ export default class BoardController {
   }
   _onDataChange(newData, oldData) {
     this._tasks[this._tasks.findIndex((it) => it === oldData)] = newData;
-    this._renderBoard(this._tasks);
+    this._renderBoard(this._tasks.filter((item) => !item.isArchive));
   }
   _onChangeView() {
     this._subscriptions.forEach((it) => it());

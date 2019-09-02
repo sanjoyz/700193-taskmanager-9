@@ -2,8 +2,10 @@ import {Key} from '../utils.js';
 import Task from '../components/task.js';
 import TaskEdit from '../components/task-edit.js';
 import {render} from '../utils.js';
-import {deleteElement} from '../utils.js';
 import {Position} from '../utils.js';
+import flatpickr from 'flatpickr';
+import 'flatpickr/dist/flatpickr.min.css';
+import 'flatpickr/dist/themes/light.css';
 
 export default class TaskController {
   constructor(container, data, onDataChange, onChangeView) {
@@ -16,6 +18,13 @@ export default class TaskController {
     this.init();
   }
   init() {
+
+    flatpickr(this._taskEdit.getElement().querySelector(`.card__date`), {
+      altInput: true,
+      allowInput: true,
+      defaultDate: this._data.dueDate,
+    });
+
     const onEscKeyDown = (evt) => {
       if (evt.key === Key.ESCAPE || evt.key === Key.ESCAPE_IE) {
         if (this._container.getElement().contains(this._taskEdit.getElement())) {
@@ -24,7 +33,7 @@ export default class TaskController {
         document.removeEventListener(`keydown`, onEscKeyDown);
       }
     };
-    // Слушатель кнопки "Архив"
+    // Слушатель кнопки "Архив" в карточке при редактировании
     this._taskEdit.getElement().querySelector(`.card__btn--archive`).addEventListener(`click`, (evt) => {
       evt.preventDefault();
       const formData = new FormData(this._taskEdit.getElement().querySelector(`.card__form`));
@@ -48,11 +57,22 @@ export default class TaskController {
         isArchive: this.isArchive ? false : true
       };
       this._onDataChange(entry, this._data);
-      if (entry.isArchive) {
-        deleteElement(this._taskView.getElement()); // удаляем элемент? как вернуть из архива?
-      }
     });
     //
+    // Слушатель кнопки "Архив" в карточке при просмотре
+    this._taskView.getElement().querySelector(`.card__btn--archive`).addEventListener(`click`, (evt) => {
+      evt.preventDefault();
+      const entry = {
+        description: this._taskView._description,
+        color: this._taskView._color,
+        tags: this._tags,
+        dueDate: this._dueDate,
+        repeatingDays: this._repeatingDays,
+        isArchive: this.isArchive ? false : true
+      };
+      this._onDataChange(entry, this._data);
+    });
+
     this._taskEdit.getElement().querySelector(`textarea`).addEventListener(`focus`, () => {
       document.removeEventListener(`keydown`, onEscKeyDown);
     });
