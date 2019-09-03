@@ -10,14 +10,104 @@ export default class TaskEdit extends AbstractComponent {
     this._repeatingDays = repeatingDays;
 
     this._subscribeOnEvents();
-    this._dateClickHandler();
+    this._dateStatusClickHandler();
+    this._repeatStatusClickHandler();
+    this._colorChanger();
+    this._hashTagRemover();
   }
-  _dateClickHandler() {
+  _subscribeOnEvents() {
+    this.getElement().querySelector(`.card__hashtag-input`).addEventListener(`keydown`, (evt) => {
+      if (evt.key === `Enter`) {
+        evt.preventDefault();
+        this.getElement().querySelector(`.card__hashtag-list`).insertAdjacentHTML(`beforeend`, `
+          <span class="card__hashtag-inner">
+            <input
+              type="hidden"
+              name="hashtag"
+              value="${evt.target.value}"
+              class="card__hashtag-hidden-input"
+            />
+            <p class="card__hashtag-name">
+              #${evt.target.value}
+            </p>
+            <button type="button" class="card__hashtag-delete">
+              delete
+            </button>
+          </span>`);
+        evt.target.value = ``;
+      }
+    });
+  }
+  _hashTagRemover() {
+    const tagRemoveButtons = this.getElement().querySelectorAll(`.card__hashtag-delete`);
+    tagRemoveButtons.forEach((button) => {
+      button.addEventListener(`click`, (evt) => {
+        deleteElement(evt.target.parentNode);
+        this._tags.delete(evt.target.previousElementSibling.innerHTML.trim().slice(1)); // уууух..
+      });
+    });
+  }
+  _dateStatusClickHandler() {
     this.getElement().querySelector(`.card__date-deadline-toggle`).addEventListener(`click`, () => {
-
       this.getElement().querySelector(`.card__date.form-control`).classList.toggle(`visually-hidden`);
       this._dueDate = null;
-
+      switch (this.getElement().querySelector(`.card__date-status`).innerHTML) {
+        case `yes`:
+          this.getElement().querySelector(`.card__date-status`).innerHTML = `no`;
+          break;
+        case `no`:
+          this.getElement().querySelector(`.card__date-status`).innerHTML = `yes`;
+          break;
+      }
+    });
+  }
+  _repeatStatusClickHandler() {
+    this.getElement().querySelector(`.card__repeat-toggle`).addEventListener(`click`, () => {
+      this.getElement().querySelector(`.card__repeat-days`).classList.toggle(`visually-hidden`);
+      this._repeatingDays = null;
+      switch (this.getElement().querySelector(`.card__repeat-status`).innerHTML) {
+        case `yes`:
+          this.getElement().querySelector(`.card__repeat-status`).innerHTML = `no`;
+          this.getElement().classList.remove(`card--repeat`);
+          break;
+        case `no`:
+          this.getElement().querySelector(`.card__repeat-status`).innerHTML = `yes`;
+          this.getElement().classList.add(`card--repeat`);
+          break;
+      }
+    });
+  }
+  _colorChanger() {
+    const colors = this.getElement().querySelectorAll(`label.card__color`);
+    const classClearer = () => {
+      const cl = Object.assign([], this.getElement().classList);
+      this.getElement().classList.remove(...this.getElement().classList);
+      if (cl.indexOf(`card--repeat`) >= 0) {
+        this.getElement().classList.add(`card`, `card--edit`, `card--repeat`);
+      } else {
+        this.getElement().classList.add(`card`, `card--edit`);
+      }
+    };
+    colors.forEach((color) => {
+      color.addEventListener(`click`, (evt) => {
+        const clickedColor = evt.target;
+        if (clickedColor.classList.contains(`card__color--black`)) {
+          classClearer();
+          this.getElement().classList.add(`card--black`);
+        } else if (clickedColor.classList.contains(`card__color--yellow`)) {
+          classClearer();
+          this.getElement().classList.add(`card--yellow`);
+        } else if (clickedColor.classList.contains(`card__color--blue`)) {
+          classClearer();
+          this.getElement().classList.add(`card--blue`);
+        } else if (clickedColor.classList.contains(`card__color--green`)) {
+          classClearer();
+          this.getElement().classList.add(`card--green`);
+        } else if (clickedColor.classList.contains(`card__color--pink`)) {
+          classClearer();
+          this.getElement().classList.add(`card--pink`);
+        }
+      });
     });
   }
 
@@ -260,28 +350,5 @@ export default class TaskEdit extends AbstractComponent {
         </div>
       </form>
       </article`;
-  }
-  _subscribeOnEvents() {
-    this.getElement().querySelector(`.card__hashtag-input`).addEventListener(`keydown`, (evt) => {
-      if (evt.key === `Enter`) {
-        evt.preventDefault();
-        this.getElement().querySelector(`.card__hashtag-list`).insertAdjacentHTML(`beforeend`, `
-          <span class="card__hashtag-inner">
-            <input
-              type="hidden"
-              name="hashtag"
-              value="${evt.target.value}"
-              class="card__hashtag-hidden-input"
-            />
-            <p class="card__hashtag-name">
-              #${evt.target.value}
-            </p>
-            <button type="button" class="card__hashtag-delete">
-              delete
-            </button>
-          </span>`);
-        evt.target.value = ``;
-      }
-    });
   }
 }
