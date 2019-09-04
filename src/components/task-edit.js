@@ -44,7 +44,7 @@ export default class TaskEdit extends AbstractComponent {
       button.addEventListener(`click`, (evt) => {
         deleteElement(evt.target.parentNode);
         const tagToDelete = evt.target.parentNode.querySelector(`input`).value;
-        this._tags.delete(tagToDelete); // evt.target.previousElementSibling.innerHTML.trim().slice(1)
+        this._tags.delete(tagToDelete);
       });
     });
   }
