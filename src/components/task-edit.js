@@ -43,7 +43,8 @@ export default class TaskEdit extends AbstractComponent {
     tagRemoveButtons.forEach((button) => {
       button.addEventListener(`click`, (evt) => {
         deleteElement(evt.target.parentNode);
-        this._tags.delete(evt.target.previousElementSibling.innerHTML.trim().slice(1)); // уууух..
+        const tagToDelete = evt.target.parentNode.querySelector(`input`).value;
+        this._tags.delete(tagToDelete); // evt.target.previousElementSibling.innerHTML.trim().slice(1)
       });
     });
   }
@@ -51,14 +52,8 @@ export default class TaskEdit extends AbstractComponent {
     this.getElement().querySelector(`.card__date-deadline-toggle`).addEventListener(`click`, () => {
       this.getElement().querySelector(`.card__date.form-control`).classList.toggle(`visually-hidden`);
       this._dueDate = null;
-      switch (this.getElement().querySelector(`.card__date-status`).innerHTML) {
-        case `yes`:
-          this.getElement().querySelector(`.card__date-status`).innerHTML = `no`;
-          break;
-        case `no`:
-          this.getElement().querySelector(`.card__date-status`).innerHTML = `yes`;
-          break;
-      }
+      const statusSelector = this.getElement().querySelector(`.card__date-status`);
+      statusSelector.innerHTML = statusSelector.innerHTML === `yes` ? `no` : `yes`;
     });
   }
   _repeatStatusClickHandler() {
@@ -91,26 +86,12 @@ export default class TaskEdit extends AbstractComponent {
     colors.forEach((color) => {
       color.addEventListener(`click`, (evt) => {
         const clickedColor = evt.target;
-        if (clickedColor.classList.contains(`card__color--black`)) {
-          classClearer();
-          this.getElement().classList.add(`card--black`);
-        } else if (clickedColor.classList.contains(`card__color--yellow`)) {
-          classClearer();
-          this.getElement().classList.add(`card--yellow`);
-        } else if (clickedColor.classList.contains(`card__color--blue`)) {
-          classClearer();
-          this.getElement().classList.add(`card--blue`);
-        } else if (clickedColor.classList.contains(`card__color--green`)) {
-          classClearer();
-          this.getElement().classList.add(`card--green`);
-        } else if (clickedColor.classList.contains(`card__color--pink`)) {
-          classClearer();
-          this.getElement().classList.add(`card--pink`);
-        }
+        const colorToPick = Array.from(clickedColor.classList).filter((i) => i.includes(`card__color--`))[0].split(`card__color--`)[1];
+        classClearer();
+        this.getElement().classList.add(`card--${colorToPick}`);
       });
     });
   }
-
 
   getTemplate() {
     return `<article class="card card--edit card--${this._color} ${Object.values(this._repeatingDays).some((it) => it === true) ? `card--repeat` : ``}">
