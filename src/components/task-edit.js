@@ -1,5 +1,5 @@
 import AbstractComponent from '../components/abstract-component.js';
-
+import {deleteElement} from '../utils.js';
 export default class TaskEdit extends AbstractComponent {
   constructor({description, dueDate, tags, color, repeatingDays}) {
     super();
@@ -8,7 +8,91 @@ export default class TaskEdit extends AbstractComponent {
     this._tags = tags;
     this._color = color;
     this._repeatingDays = repeatingDays;
+
+    this._subscribeOnEvents();
+    this._dateStatusClickHandler();
+    this._repeatStatusClickHandler();
+    this._colorChanger();
+    this._hashTagRemover();
   }
+  _subscribeOnEvents() {
+    this.getElement().querySelector(`.card__hashtag-input`).addEventListener(`keydown`, (evt) => {
+      if (evt.key === `Enter`) {
+        evt.preventDefault();
+        this.getElement().querySelector(`.card__hashtag-list`).insertAdjacentHTML(`beforeend`, `
+          <span class="card__hashtag-inner">
+            <input
+              type="hidden"
+              name="hashtag"
+              value="${evt.target.value}"
+              class="card__hashtag-hidden-input"
+            />
+            <p class="card__hashtag-name">
+              #${evt.target.value}
+            </p>
+            <button type="button" class="card__hashtag-delete">
+              delete
+            </button>
+          </span>`);
+        evt.target.value = ``;
+      }
+    });
+  }
+  _hashTagRemover() {
+    const tagRemoveButtons = this.getElement().querySelectorAll(`.card__hashtag-delete`);
+    tagRemoveButtons.forEach((button) => {
+      button.addEventListener(`click`, (evt) => {
+        deleteElement(evt.target.parentNode);
+        const tagToDelete = evt.target.parentNode.querySelector(`input`).value;
+        this._tags.delete(tagToDelete);
+      });
+    });
+  }
+  _dateStatusClickHandler() {
+    this.getElement().querySelector(`.card__date-deadline-toggle`).addEventListener(`click`, () => {
+      this.getElement().querySelector(`.card__date.form-control`).classList.toggle(`visually-hidden`);
+      this._dueDate = null;
+      const statusSelector = this.getElement().querySelector(`.card__date-status`);
+      statusSelector.innerHTML = statusSelector.innerHTML === `yes` ? `no` : `yes`;
+    });
+  }
+  _repeatStatusClickHandler() {
+    this.getElement().querySelector(`.card__repeat-toggle`).addEventListener(`click`, () => {
+      this.getElement().querySelector(`.card__repeat-days`).classList.toggle(`visually-hidden`);
+      this._repeatingDays = null;
+      switch (this.getElement().querySelector(`.card__repeat-status`).innerHTML) {
+        case `yes`:
+          this.getElement().querySelector(`.card__repeat-status`).innerHTML = `no`;
+          this.getElement().classList.remove(`card--repeat`);
+          break;
+        case `no`:
+          this.getElement().querySelector(`.card__repeat-status`).innerHTML = `yes`;
+          this.getElement().classList.add(`card--repeat`);
+          break;
+      }
+    });
+  }
+  _colorChanger() {
+    const colors = this.getElement().querySelectorAll(`label.card__color`);
+    const classClearer = () => {
+      const cl = Object.assign([], this.getElement().classList);
+      this.getElement().classList.remove(...this.getElement().classList);
+      if (cl.indexOf(`card--repeat`) >= 0) {
+        this.getElement().classList.add(`card`, `card--edit`, `card--repeat`);
+      } else {
+        this.getElement().classList.add(`card`, `card--edit`);
+      }
+    };
+    colors.forEach((color) => {
+      color.addEventListener(`click`, (evt) => {
+        const clickedColor = evt.target;
+        const colorToPick = Array.from(clickedColor.classList).filter((i) => i.includes(`card__color--`))[0].split(`card__color--`)[1];
+        classClearer();
+        this.getElement().classList.add(`card--${colorToPick}`);
+      });
+    });
+  }
+
   getTemplate() {
     return `<article class="card card--edit card--${this._color} ${Object.values(this._repeatingDays).some((it) => it === true) ? `card--repeat` : ``}">
     <form class="card__form" method="get">
@@ -155,7 +239,6 @@ export default class TaskEdit extends AbstractComponent {
                     <p class="card__hashtag-name">
                       #${tag}
                     </p>
-                    <button type="button" class="card__hashtag-name">#${tag}</button>
                     <button type="button" class="card__hashtag-delete">
                       delete
                     </button>
