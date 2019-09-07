@@ -18,7 +18,7 @@ export default class TaskController {
     this.init();
   }
   init() {
-
+	// сделал в прошлый раз
     flatpickr(this._taskEdit.getElement().querySelector(`.card__date`), {
       altInput: true,
       allowInput: true,
