@@ -6,7 +6,7 @@ import {Position} from '../utils.js';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 import 'flatpickr/dist/themes/light.css';
-
+import moment from 'moment';
 export default class TaskController {
   constructor(container, data, onDataChange, onChangeView) {
     this._container = container;
@@ -18,13 +18,12 @@ export default class TaskController {
     this.init();
   }
   init() {
-	// сделал в прошлый раз
+    // сделал в прошлый раз
     flatpickr(this._taskEdit.getElement().querySelector(`.card__date`), {
       altInput: true,
       allowInput: true,
       defaultDate: this._data.dueDate,
     });
-
     const onEscKeyDown = (evt) => {
       if (evt.key === Key.ESCAPE || evt.key === Key.ESCAPE_IE) {
         if (this._container.getElement().contains(this._taskEdit.getElement())) {
@@ -134,7 +133,7 @@ export default class TaskController {
         description: formData.get(`text`),
         color: formData.get(`color`),
         tags: new Set(formData.getAll(`hashtag-input`)),
-        dueDate: new Date(formData.get(`date`)),
+        dueDate: moment(new Date(formData.get(`date`))).format(`MMM Do YY`),
         repeatingDays: formData.getAll(`repeat`).reduce((acc, it) => {
           acc[it] = true;
           return acc;
